@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --translate-distance: 200px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+
+
+.ring-element-0 { transform: rotate(0deg) translate(var(--translate-distance)) rotate(0deg); }
+.ring-element-1 { transform: rotate(30deg) translate(var(--translate-distance)) rotate(-30deg); }
+.ring-element-2 { transform: rotate(60deg) translate(var(--translate-distance)) rotate(-60deg); }
+.ring-element-3 { transform: rotate(90deg) translate(var(--translate-distance)) rotate(-90deg); }
+.ring-element-4 { transform: rotate(120deg) translate(var(--translate-distance)) rotate(-120deg); }
+.ring-element-5 { transform: rotate(150deg) translate(var(--translate-distance)) rotate(-150deg); }
+.ring-element-6 { transform: rotate(180deg) translate(var(--translate-distance)) rotate(-180deg); }
+.ring-element-7 { transform: rotate(210deg) translate(var(--translate-distance)) rotate(-210deg); }
+.ring-element-8 { transform: rotate(240deg) translate(var(--translate-distance)) rotate(-240deg); }
+.ring-element-9 { transform: rotate(270deg) translate(var(--translate-distance)) rotate(-270deg); }
+.ring-element-10 { transform: rotate(300deg) translate(var(--translate-distance)) rotate(-300deg); }
+.ring-element-11 { transform: rotate(330deg) translate(var(--translate-distance)) rotate(-330deg); }
