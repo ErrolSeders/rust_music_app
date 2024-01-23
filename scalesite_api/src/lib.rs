@@ -1,9 +1,6 @@
 
 use wasm_bindgen::prelude::*;
 
-// Scale Length
-const S_LN: usize = 12;
-
 // Chords are represented by vectors of pitches 
 // and\or absolute intervals from the tonic
 pub fn match_chord(quality: &str) -> Vec<u16> {
@@ -143,7 +140,6 @@ pub fn get_scalename(scalenum: u16) -> String {
         0b1010_0101_0011 => String::from("Raga"),
 
         //Misc
-        0b0000_0000_0001 => String::from(""),
         0b0000_0000_0000 => String::from("The Un-Scale"),
         _ if scalenum & 0b1 == 0 => String::from("Not a Scale"),
         _ => String::from("Unknown Scale"),
@@ -286,24 +282,6 @@ mod tests {
         let expected_chord_in_scale = vec![0xE2b7409, 0xE962b74];
         assert_eq!(get_chord_in_scale(quality, tonic, pitchclassset), expected_chord_in_scale);
 
-    }
-
-    #[test]
-    fn test_random_scale() {
-        let tonic = 2; // D
-        let pitchclassset = vec![0,2,3,5,7,10];
-        let quality = "maj";
-        let expected_chord_in_scale = vec![0xE2b7409, 0xE962b74];
-    }
-
-    #[test]
-    fn test_reduce_vecs() {
-        let intervals = vec![2,2,1,2,2,2,1];
-        let expected_reduced_vecs = vec![
-            vec![4,3,3,4,4,3],
-            vec![7,6,8,7,7],
-            vec![13,14,15,14],
-        ];
     }
 
     #[test]

@@ -1,22 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import { useEffect, useState } from "react";
 
 interface ChordButtonsProps {
-    wasmModule: any;  
+    wasmPromise: Promise<WasmModule>;  
     currentScale: Scale;
     NOTES: { [key: number]: string };
+    selectedChord: Chord;
     setSelectedChord: React.Dispatch<React.SetStateAction<Chord>>;
 }
 
 
-const ChordButtons = ({wasmModule, currentScale, NOTES, setSelectedChord}: ChordButtonsProps) => {
+const ChordButtons = ({wasmPromise, currentScale, NOTES, selectedChord, setSelectedChord}: ChordButtonsProps) => {
     
     const qualities = {
         triads: [
-            "maj","min","dim","aug"
+            "maj","min","dim","aug","sus2","sus4",
         ],
          tetrads: [
-            "sus2","sus4","maj7","m7","7",
+            "maj7","m7","7",
             "dim7","m7b5","mMaj7","maj6","min6"
         ],
         pentads: [
@@ -27,7 +29,7 @@ const ChordButtons = ({wasmModule, currentScale, NOTES, setSelectedChord}: Chord
         ]
     }
     
-    const decode = (chordNum, quality) => {
+    const decode = (chordNum: number, quality: string) => {
         const chordStr = chordNum.toString(16).substring(1);
         let notes= [];
 
@@ -51,7 +53,7 @@ const ChordButtons = ({wasmModule, currentScale, NOTES, setSelectedChord}: Chord
 
     useEffect(() => {  
         setChords({triads: [], tetrads:[], pentads: [], hexads: []});
-        wasmModule.then((wasm) => {
+        wasmPromise.then((wasm: WasmModule) => {
             let newChords: ChordGroup = {triads: [], tetrads:[], pentads: [], hexads: []};
             Object.entries(qualities).map(([key, quals]) => {
                 for (let qual of quals) {
@@ -72,12 +74,22 @@ const ChordButtons = ({wasmModule, currentScale, NOTES, setSelectedChord}: Chord
     return (
         <div className="flex flex-col w-80 mx-auto">
         {Object.entries(chords).map(([group, chords], i) => (
-            <div key={i} className="flex flex-row flex-wrap justify-center py-2 mx-auto">
+            <div key={i} className="grid-cols-2 py-2 px-2 ml-2 mr-auto">
+                <div>{group + ":"}</div>
+                <div className="grid-cols-3 justify-center items-center justify-items-stretch mx-auto">
                 {chords.map((chord, j) => (
-                    <button key={j} onClick={() => {setSelectedChord(chord)}} className="bg-blue-500 px-2 mx-1 rounded-md">
+                    <button 
+                        key={j} 
+                        onClick={() => {setSelectedChord(chord)}} 
+                        className={
+                            `${chord === selectedChord ? 'bg-ps1blue-700' : 'bg-ps1blue-200'} 
+                            px-2 items-center justify-center my-1 mx-1 rounded-md`
+                        }
+                    >
                         {chord.tonic.letter + ' ' + chord.quality}
                     </button>
-                ))}
+                
+                ))}</div>
             </div>
         ))}
     </div>

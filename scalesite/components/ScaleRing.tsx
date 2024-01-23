@@ -1,8 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import {useState, useEffect, useRef} from 'react';
-import useRotationalDrag from '../hooks/useRotationalDrag';
+import useRotationalDrag from '@/hooks/useRotationalDrag';
+import SetElementColor from '@/hooks/setElementColor';
 import { ANGLESTOTONICS } from '@/constants/constants';
+
+import pallete from '@/constants/pallete';
 
 interface ScaleRingProps {
     scaleUIState: any;
@@ -28,10 +32,10 @@ const ScaleRing: React.FC<ScaleRingProps> = ({scaleUIState, setScaleUIState, NOT
     return (
         <div className="relative flex mx-auto">
             <svg 
+                className="bg-ps1grey-600 rounded-full"
                 ref={svgRef} 
-                className='bg-green-500 rounded-full' 
-                style={{width: '500px', height: '500px', transformOrigin: 'center'}} 
-                viewBox="0 0 500 500" 
+                style={{width: '400px', height: '400px', transformOrigin: 'center'}} 
+                viewBox="0 0 400 400" 
                 transform={`rotate(${angle})`}
             >
                 {links.map((_, i) => (
@@ -66,7 +70,8 @@ interface ScaleRingElementProps {
 
 const ScaleRingElement: React.FC<ScaleRingElementProps> = ({ noteNum, scaleUIState, setScaleUIState, NOTES, rotation, angle, svgRef, setAngle, selectedChord}) => {  
     
-    const [color, setColor] = useState('white');
+    const [color, setColor] = useState(pallete.ps1blue[200]);
+
     const { isDragging, handleMouseDown, handleMouseMove, handleMouseUp } = useRotationalDrag(svgRef, angle, setAngle);
 
     const handleClick = () => {
@@ -77,27 +82,16 @@ const ScaleRingElement: React.FC<ScaleRingElementProps> = ({ noteNum, scaleUISta
         };
     };
 
-    useEffect(() => {
-        if (scaleUIState.notesOn[noteNum] === true) {
-            setColor('grey');
-        } else {
-            setColor('white');
-        }
-    }, [scaleUIState])
-
-    useEffect(() => {
-        //Hightlight notes in the chord
-        if (selectedChord.notes.includes(noteNum)) {
-            setColor('green');
-        } else {
-            // Return to non-selected color
-            if (scaleUIState.notesOn[noteNum] === true) {
-                setColor('grey');
-            } else {
-                setColor('white');
-            }
-        }
-    }, [selectedChord])
+    SetElementColor(
+        setColor, 
+        selectedChord, 
+        scaleUIState, 
+        noteNum, 
+        pallete.ps1blue[900], 
+        pallete.ps1blue[700],
+        pallete.ps1blue[200],
+        pallete.ps1grey[100],
+    )
 
     useEffect(() => {
 
@@ -110,16 +104,17 @@ const ScaleRingElement: React.FC<ScaleRingElementProps> = ({ noteNum, scaleUISta
         };
     }, [isDragging, handleMouseDown, handleMouseUp, handleMouseMove]);
 
-    const r = 120;
-    const cx = 250 + r * Math.cos(rotation * Math.PI / 180);
-    const cy = 250 + r * Math.sin(rotation * Math.PI / 180);
+    const r = 140;
+    const cx = 200 + r * Math.cos(rotation * Math.PI / 180);
+    const cy = 200 + r * Math.sin(rotation * Math.PI / 180);
 
     return (
         <>
             <circle 
+                className="bg-interactable"
                 cx={cx}
                 cy={cy} 
-                r="25" 
+                r="30" 
                 stroke="black" 
                 strokeWidth="3" 
                 fill={color} 

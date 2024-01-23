@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import AccidentalButton from "./AccidentalButton";
@@ -10,8 +11,7 @@ import {useEffect, useState} from 'react';
 import { useWasm } from "@/contexts/WasmContext";
 import { NOTENUMBERSFLATS, NOTENUMBERSSHARPS } from "@/constants/constants";
 
-
-const ScaleUIState = {
+const ScaleUIState: ScaleUIStateType = {
     notesOn: {
         0: false,
         1: false,
@@ -30,11 +30,11 @@ const ScaleUIState = {
     tonic: 0
 }
 
-const rotate = (arr: Array<T>, k:number) => arr.slice(k).concat(arr.slice(0, k));
+const rotate = (arr: Array<any>, k:number) => new Uint8Array(arr.slice(k).concat(arr.slice(0, k)));
 
 const ScaleContainer = () => {
 
-    const { wasmModule } = useWasm();
+    const wasmPromise = useWasm();
     const [useSharps, setUseSharps] = useState(false);
     const [scaleUIState, setScaleUIState] = useState(ScaleUIState);
     const [NOTES, setNOTES] = useState(useSharps ? NOTENUMBERSSHARPS : NOTENUMBERSFLATS);
@@ -56,7 +56,8 @@ const ScaleContainer = () => {
     }, [useSharps]);
     
     useEffect(() => {
-        wasmModule.then((wasm) => {
+        wasmPromise.then(
+            (wasm: WasmModule) => {
             const scalenum = wasm.get_scalenum(rotate(Object.values(scaleUIState.notesOn), scaleUIState.tonic));
             const tonic = {num: scaleUIState.tonic, letter: NOTES[scaleUIState.tonic]};
             const pitchclassset: Uint16Array = wasm.build_pitchclassset(scalenum);
@@ -85,10 +86,16 @@ const ScaleContainer = () => {
 
     return (
         <div className="flex flex-row m-auto">
-            <ChordButtons wasmModule={wasmModule} currentScale={currentScale} NOTES={NOTES} setSelectedChord={setSelectedChord}/>
+            <ChordButtons wasmPromise={wasmPromise} currentScale={currentScale} NOTES={NOTES} selectedChord={selectedChord} setSelectedChord={setSelectedChord}/>
             <div className="flex flex-col px-8 mx-auto">
-                <ScaleTitle wasmModule={wasmModule} currentScale={currentScale} NOTES={NOTES}/>
-                <AccidentalButton useSharps={useSharps} setUseSharps={setUseSharps}/>
+                <div className="flex flex-row"> 
+                    <div className="flex justify-center w-28 mr-auto py-2">
+                        <AccidentalButton useSharps={useSharps} setUseSharps={setUseSharps}/>
+                    </div>
+                    <div className="mx-auto py-2 w-full">
+                        <ScaleTitle wasmPromise={wasmPromise} currentScale={currentScale} NOTES={NOTES}/>
+                    </div>
+                </div>
                 <ScaleRing scaleUIState={scaleUIState} setScaleUIState={setScaleUIState} NOTES={NOTES} selectedChord={selectedChord}/>   
             </div>
             <GuitarNeck scaleUIState={scaleUIState} setScaleUIState={setScaleUIState} NOTES={NOTES} selectedChord={selectedChord}/>

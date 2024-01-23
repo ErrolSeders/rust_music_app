@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback} from "react";
 
 const enforceanglebounds = (angle: number) => {
     angle %= 360;
@@ -24,7 +24,7 @@ const useRotationalDrag = (svgRef: React.RefObject<SVGSVGElement>, angle: number
         return atan * (180 / Math.PI);
     }, [svgRef]);
 
-    const handleMouseDown = useCallback((e: React.MouseEvent<SVGCircleElement, MouseEvent>) => {
+    const handleMouseDown = useCallback((e: React.MouseEvent<SVGCircleElement | SVGTextElement, MouseEvent>) => {
         e.preventDefault();
         setIsDragging(true);
         setInitialMouseAngle(calculateAngle(e));
@@ -53,7 +53,7 @@ const useRotationalDrag = (svgRef: React.RefObject<SVGSVGElement>, angle: number
 
     const handleMouseUp = useCallback(() => {
 
-        setAngle(prevAngle => {
+        setAngle((prevAngle: number) => { 
             let newangle = Math.round(prevAngle / snapangle) * snapangle 
             newangle = enforceanglebounds(newangle);
             return newangle;
