@@ -1,7 +1,11 @@
-type ScaleUIStateType = {
+type ScaleUIState = {
   notesOn: { [key: number]: boolean };
   tonic: number;
 };
+
+type ReactSetter<T> = React.Dispatch<React.SetStateAction<T>>;
+
+type NoteNames = { [key: number]: string };
 
 type WasmModule = {
   default: typeof import("@/pkg/scalesite_api");

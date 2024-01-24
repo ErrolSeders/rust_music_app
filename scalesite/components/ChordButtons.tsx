@@ -1,18 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
+import { useNoteNames } from "@/contexts/NoteNameContext";
 import { useEffect, useState } from "react";
 
 interface ChordButtonsProps {
     wasmPromise: Promise<WasmModule>;  
     currentScale: Scale;
-    NOTES: { [key: number]: string };
     selectedChord: Chord;
-    setSelectedChord: React.Dispatch<React.SetStateAction<Chord>>;
+    setSelectedChord: ReactSetter<Chord>;
 }
 
+const ChordButtons = ({wasmPromise, currentScale, selectedChord, setSelectedChord}: ChordButtonsProps) => {
+    const { noteNames } = useNoteNames();
 
-const ChordButtons = ({wasmPromise, currentScale, NOTES, selectedChord, setSelectedChord}: ChordButtonsProps) => {
-    
     const qualities = {
         triads: [
             "maj","min","dim","aug","sus2","sus4",
@@ -41,7 +41,7 @@ const ChordButtons = ({wasmPromise, currentScale, NOTES, selectedChord, setSelec
         notes = notes.reverse();
 
         return {
-            tonic: { num: notes[0], letter: NOTES[notes[0]] },
+            tonic: { num: notes[0], letter: noteNames[notes[0]] },
             quality: quality,
             notes: new Uint16Array(notes)
         }
@@ -67,15 +67,16 @@ const ChordButtons = ({wasmPromise, currentScale, NOTES, selectedChord, setSelec
             })      
             setChords(newChords);
         })
-    }, [currentScale, NOTES]);
+    }, [currentScale, noteNames]);
 
-    
+    const captialize = (str:string) => str.charAt(0).toUpperCase() + str.slice(1);
 
     return (
         <div className="flex flex-col w-80 mx-auto">
         {Object.entries(chords).map(([group, chords], i) => (
             <div key={i} className="grid-cols-2 py-2 px-2 ml-2 mr-auto">
-                <div>{group + ":"}</div>
+                <div>{captialize(group) + ":"}</div>
+                <hr className="w-full mb-2"/>
                 <div className="grid-cols-3 justify-center items-center justify-items-stretch mx-auto">
                 {chords.map((chord, j) => (
                     <button 

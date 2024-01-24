@@ -1,15 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { NOTENUMBERSFLATS, NOTENUMBERSSHARPS } from "@/constants/constants";
 import { useEffect, useState } from "react"
 
 interface AccidentalButtonProps {
-    useSharps: boolean;
-    setUseSharps: (value: boolean) => void;
+    setNoteNames: ReactSetter<NoteNames>;
 }
 
-const AccidentalButton = ({ useSharps, setUseSharps }: AccidentalButtonProps) => {
+const AccidentalButton = ({ setNoteNames }: AccidentalButtonProps) => {
+    const [useSharps, setUseSharps] = useState(false);
 
     const handleClick = () => {
         setUseSharps(!useSharps)
     }
+
+    useEffect(() => {
+        setNoteNames(useSharps ? NOTENUMBERSSHARPS : NOTENUMBERSFLATS);
+    }, [useSharps]);
 
     return (
         <button 

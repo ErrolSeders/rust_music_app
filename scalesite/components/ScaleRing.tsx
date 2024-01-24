@@ -7,15 +7,15 @@ import SetElementColor from '@/hooks/setElementColor';
 import { ANGLESTOTONICS } from '@/constants/constants';
 
 import pallete from '@/constants/pallete';
+import { useNoteNames } from '@/contexts/NoteNameContext';
 
 interface ScaleRingProps {
-    scaleUIState: any;
-    setScaleUIState: React.Dispatch<React.SetStateAction<any>>;
-    NOTES: {[key:number]:string};
+    scaleUIState: ScaleUIState;
+    setScaleUIState: ReactSetter<ScaleUIState>;
     selectedChord: Chord;
 }
 
-const ScaleRing: React.FC<ScaleRingProps> = ({scaleUIState, setScaleUIState, NOTES, selectedChord}) => {
+const ScaleRing: React.FC<ScaleRingProps> = ({scaleUIState, setScaleUIState, selectedChord}) => {
     const [angle, setAngle] = useState(270);
     
     const svgRef = useRef<SVGSVGElement>(null);
@@ -43,7 +43,6 @@ const ScaleRing: React.FC<ScaleRingProps> = ({scaleUIState, setScaleUIState, NOT
                         key={i} noteNum={i} 
                         scaleUIState={scaleUIState}
                         setScaleUIState={setScaleUIState}
-                        NOTES={NOTES}
                         rotation={360 / links.length * i} 
                         svgRef={svgRef} 
                         angle={angle} 
@@ -60,7 +59,6 @@ interface ScaleRingElementProps {
     noteNum: number;
     scaleUIState: any;
     setScaleUIState: React.Dispatch<React.SetStateAction<any>>;
-    NOTES: any;
     rotation: number;
     svgRef: React.RefObject<SVGSVGElement>;
     angle: number;
@@ -68,8 +66,9 @@ interface ScaleRingElementProps {
     selectedChord: Chord;
 }
 
-const ScaleRingElement: React.FC<ScaleRingElementProps> = ({ noteNum, scaleUIState, setScaleUIState, NOTES, rotation, angle, svgRef, setAngle, selectedChord}) => {  
+const ScaleRingElement: React.FC<ScaleRingElementProps> = ({ noteNum, scaleUIState, setScaleUIState, rotation, angle, svgRef, setAngle, selectedChord}) => {  
     
+    const {noteNames} = useNoteNames();
     const [color, setColor] = useState(pallete.ps1blue[200]);
 
     const { isDragging, handleMouseDown, handleMouseMove, handleMouseUp } = useRotationalDrag(svgRef, angle, setAngle);
@@ -131,7 +130,7 @@ const ScaleRingElement: React.FC<ScaleRingElementProps> = ({ noteNum, scaleUISta
                 onMouseDown={handleMouseDown}
                 onClick={handleClick}
             >
-                {NOTES[noteNum]}
+                {noteNames[noteNum]}
             </text>
         </>
     );

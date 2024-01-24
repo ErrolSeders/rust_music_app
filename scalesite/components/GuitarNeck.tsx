@@ -1,14 +1,16 @@
+import { NOTENAMESTONUMBERS } from "@/constants/constants";
+import { useNoteNames } from "@/contexts/NoteNameContext";
 import SetElementColor from "@/hooks/setElementColor";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface GuitarNeckProps{
-    scaleUIState: any;
-    setScaleUIState: React.Dispatch<React.SetStateAction<any>>;
-    NOTES: {[key:number]:string};
+    scaleUIState: ScaleUIState;
+    setScaleUIState: ReactSetter<ScaleUIState>;
     selectedChord: Chord;
 }
 
-const GuitarNeck: React.FC<GuitarNeckProps> = ({scaleUIState, setScaleUIState, NOTES, selectedChord}) => {
+const GuitarNeck: React.FC<GuitarNeckProps> = ({scaleUIState, setScaleUIState, selectedChord}) => {
+    const {noteNames} = useNoteNames();
     const [tuning, setTuning] = useState([4,9,2,7,11,4])
     
     const STRINGS = 6;
@@ -16,20 +18,18 @@ const GuitarNeck: React.FC<GuitarNeckProps> = ({scaleUIState, setScaleUIState, N
 
     const handleTuningChange = (stringNum: number, event: React.ChangeEvent<HTMLInputElement>) => {
         const newTuning = [...tuning];
-        newTuning[stringNum] = Number(event.target.value);
+        newTuning[stringNum] = NOTENAMESTONUMBERS[event.target.value];
         setTuning(newTuning);
     }
 
-    const dotfrets = ['','','','*','','*','','*','','*','','','**','','','*','','*']
-
     return (
     <div className="flex flex-col mx-auto p-2"> 
-        <div className="ml-20 flex justify-between mb-4">
+        <div className="ml-[5.2rem] flex justify-between mb-4">
         {Array.from({ length: STRINGS }, (_, i) => (
             <input 
                 key={`string-input-${i}`} 
-                type="number" 
-                value={tuning[i]} 
+                type="text" 
+                value={noteNames[tuning[i]]} 
                 onChange={(event) => handleTuningChange(i, event)}
                 className="w-8 h-8 rounded text-center items-center justify-center"
             />
@@ -54,7 +54,7 @@ const GuitarNeck: React.FC<GuitarNeckProps> = ({scaleUIState, setScaleUIState, N
                                 noteNum={(tuning[i] + j) % 12}
                                 stringNum={i}
                                 fretNum={j}
-                                NOTES={NOTES} />
+                                />
                         ))}
                     </div>
                 ))}
@@ -64,17 +64,18 @@ const GuitarNeck: React.FC<GuitarNeckProps> = ({scaleUIState, setScaleUIState, N
 }
 
 interface GuitarNeckElementProps {
-    scaleUIState: any;
-    setScaleUIState: React.Dispatch<React.SetStateAction<any>>;
+    scaleUIState: ScaleUIState;
+    setScaleUIState: ReactSetter<ScaleUIState>;
     selectedChord: Chord;
     noteNum: number;
     stringNum: number;
     fretNum: number;
-    NOTES: {[key:number]:string};
 }
 
-const GuitarNeckElement: React.FC<GuitarNeckElementProps> = ({scaleUIState, setScaleUIState, selectedChord, noteNum, stringNum, fretNum, NOTES}) => {
-    let [color, setColor] = useState("bg-noselect");
+const GuitarNeckElement: React.FC<GuitarNeckElementProps> = ({scaleUIState, setScaleUIState, selectedChord, noteNum, stringNum, fretNum}) => {
+    
+    const {noteNames} = useNoteNames();
+    const [color, setColor] = useState("bg-noselect");
     
     SetElementColor(
         setColor, 
@@ -89,15 +90,15 @@ const GuitarNeckElement: React.FC<GuitarNeckElementProps> = ({scaleUIState, setS
 
     const handleClick = () => {
         scaleUIState.notesOn[noteNum] ? 
-            setScaleUIState((prevScaleUIState: ScaleUIStateType) => ({...prevScaleUIState, notesOn: {...prevScaleUIState.notesOn, [noteNum]: false}})) 
+            setScaleUIState((prevScaleUIState: ScaleUIState) => ({...prevScaleUIState, notesOn: {...prevScaleUIState.notesOn, [noteNum]: false}})) 
             :
-            setScaleUIState((prevScaleUIState: ScaleUIStateType) => ({...prevScaleUIState, notesOn: {...prevScaleUIState.notesOn, [noteNum]: true}}));
+            setScaleUIState((prevScaleUIState: ScaleUIState) => ({...prevScaleUIState, notesOn: {...prevScaleUIState.notesOn, [noteNum]: true}}));
     }
 
     return (
         <>
-            <button onClick={handleClick} className={`h-8 w-8 my-1 mx-1 justify-center border border_gray-3 rounded-full ${color}`}>
-                {NOTES[noteNum]}
+            <button onClick={handleClick} className={`h-8 w-8 my-1 mx-1 table-cell align-middle border border_gray-3 rounded-full ${color}`}>
+                {noteNames[noteNum]}
             </button>
             <hr className="border-gray-3" />
         </>

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import { Josefin_Sans } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
 import './globals.css'
 
-const josefin = Josefin_Sans({ weight: "300", subsets: ['latin'] })
+const montserrat = Montserrat({subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${josefin.className} bg-ps1grey-500`}>{children}</body>
+      <body className={`${montserrat.className} font-light bg-ps1grey-500`}>{children}</body>
     </html>
   )
 }
