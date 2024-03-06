@@ -1,10 +1,5 @@
 import { useState, useCallback} from "react";
-
-const enforceanglebounds = (angle: number) => {
-    angle %= 360;
-    if (angle <= 0) angle += 360;
-    return angle;
-}
+import { enforceanglebounds } from "@/utils/utils";
 
 const useRotationalDrag = (svgRef: React.RefObject<SVGSVGElement>, angle: number, setAngle: (angle: number) => void) => {
     const [isDragging, setIsDragging] = useState(false);
@@ -27,7 +22,7 @@ const useRotationalDrag = (svgRef: React.RefObject<SVGSVGElement>, angle: number
     const handleMouseDown = useCallback((e: React.MouseEvent<SVGCircleElement | SVGTextElement, MouseEvent>) => {
         e.preventDefault();
         setIsDragging(true);
-        setInitialMouseAngle(calculateAngle(e));
+        setInitialMouseAngle(calculateAngle(e.nativeEvent));
         setInitialAngle(angle);
     }, [calculateAngle, angle]);
 
@@ -52,14 +47,9 @@ const useRotationalDrag = (svgRef: React.RefObject<SVGSVGElement>, angle: number
     }, [isDragging, initialMouseAngle, initialAngle, calculateAngle, setAngle]);
 
     const handleMouseUp = useCallback(() => {
-
-        setAngle((prevAngle: number) => { 
-            let newangle = Math.round(prevAngle / snapangle) * snapangle 
-            newangle = enforceanglebounds(newangle);
-            return newangle;
-        });
+        setAngle(enforceanglebounds(Math.round(angle / snapangle) * snapangle));
         setIsDragging(false);
-    }, [setAngle]);
+    }, [setAngle, angle]);
 
     return { isDragging, handleMouseDown, handleMouseMove, handleMouseUp };
 };

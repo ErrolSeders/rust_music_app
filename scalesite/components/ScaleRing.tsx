@@ -1,6 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-'use client'
-
 import {useState, useEffect, useRef} from 'react';
 import useRotationalDrag from '@/hooks/useRotationalDrag';
 import SetElementColor from '@/hooks/setElementColor';
@@ -8,6 +6,7 @@ import { ANGLESTOTONICS } from '@/constants/constants';
 
 import pallete from '@/constants/pallete';
 import { useNoteNames } from '@/contexts/NoteNameContext';
+import { enforceanglebounds } from '@/utils/utils';
 
 interface ScaleRingProps {
     scaleUIState: ScaleUIState;
@@ -30,18 +29,18 @@ const ScaleRing: React.FC<ScaleRingProps> = ({scaleUIState, setScaleUIState, sel
     }, [angle]);
 
     return (
-        <div className="relative flex mx-auto">
+        <div className="relative flex flex-col mx-auto">
             <svg 
                 className="bg-ps1grey-600 rounded-full"
                 ref={svgRef} 
-                style={{width: '400px', height: '400px', transformOrigin: 'center'}} 
+                style={{width: '40vh', height: '40vh', transformOrigin: 'center'}} 
                 viewBox="0 0 400 400" 
                 transform={`rotate(${angle})`}
             >
                 {links.map((_, i) => (
                     <ScaleRingElement 
                         key={i} noteNum={i} 
-                        scaleUIState={scaleUIState}
+                        scaleUIState={scaleUIState} 
                         setScaleUIState={setScaleUIState}
                         rotation={360 / links.length * i} 
                         svgRef={svgRef} 
@@ -51,6 +50,16 @@ const ScaleRing: React.FC<ScaleRingProps> = ({scaleUIState, setScaleUIState, sel
                     />
                 ))}
             </svg>
+            <div className="flex flex-row">
+                <button className="bg-ps1blue-200 px-2 my-1 mx-1 rounded-md mr-auto" 
+                        onClick={() => setAngle((prevAngle: number) => enforceanglebounds(prevAngle + 30))}>
+                            Rotate left
+                </button>
+                <button className="bg-ps1blue-200 px-2 my-1 mx-1 rounded-md ml-auto" 
+                        onClick={() => setAngle((prevAngle: number) => enforceanglebounds(prevAngle - 30))}>
+                            Rotate right
+                </button>
+            </div>
         </div>
     );
 };

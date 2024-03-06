@@ -13,17 +13,22 @@ const SetElementColor = (
     inscaleColor: string,
     noselectColor:string 
     ) => {
-    useEffect(() => (
-        setColor(
-            selectedChord.notes.includes(noteNum) ?
-                selectedChord.tonic.num === noteNum ?
-                    tonicColor :
-                    inchordColor 
-                : scaleUIState.notesOn[noteNum] ?
-                    inscaleColor :
-                    noselectColor
-        )
-    ), [scaleUIState, selectedChord]);
+    useEffect(() => {
+        if (isNaN(noteNum)) {
+            setColor(noselectColor)
+        } else {
+            setColor(
+                selectedChord.notes.includes(noteNum) ?
+                    selectedChord.tonic.num === noteNum ?
+                        tonicColor :
+                        inchordColor 
+                    : scaleUIState.notesOn[noteNum] ?
+                        inscaleColor :
+                        noselectColor
+            )
+        }
+    }
+    ,[noteNum, scaleUIState, selectedChord]);
 }
 
 export default SetElementColor;

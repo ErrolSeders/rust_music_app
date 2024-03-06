@@ -1,7 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-'use client'
 import { useNoteNames } from "@/contexts/NoteNameContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const ChordScrollContainer = ({children}: {children: React.ReactNode}) => {
+      return (
+        <div
+          style={{
+            position: "relative", 
+            height: "100%", 
+            overflow: "scroll"
+           }}
+        >
+          <div
+            style={{
+              position: "relative"
+            }}
+          >
+            {children}
+          </div>
+        </div>
+      );
+}
 
 interface ChordButtonsProps {
     wasmPromise: Promise<WasmModule>;  
@@ -72,11 +91,12 @@ const ChordButtons = ({wasmPromise, currentScale, selectedChord, setSelectedChor
     const captialize = (str:string) => str.charAt(0).toUpperCase() + str.slice(1);
 
     return (
-        <div className="flex flex-col w-80 mx-auto">
+        <div className="flex flex-col h-screen w-80 mx-auto">
         {Object.entries(chords).map(([group, chords], i) => (
-            <div key={i} className="grid-cols-2 py-2 px-2 ml-2 mr-auto">
+            <div key={i} className="grid-cols-2 h-32 my-1 py-2 px-2 ml-2 mr-auto">
                 <div>{captialize(group) + ":"}</div>
-                <hr className="w-full mb-2"/>
+                <hr className="w-full"/>
+                <ChordScrollContainer>
                 <div className="grid-cols-3 justify-center items-center justify-items-stretch mx-auto">
                 {chords.map((chord, j) => (
                     <button 
@@ -84,13 +104,14 @@ const ChordButtons = ({wasmPromise, currentScale, selectedChord, setSelectedChor
                         onClick={() => {setSelectedChord(chord)}} 
                         className={
                             `${chord === selectedChord ? 'bg-ps1blue-700' : 'bg-ps1blue-200'} 
-                            px-2 items-center justify-center my-1 mx-1 rounded-md`
+                            px-2 my-1 mx-1 rounded-md`
                         }
                     >
                         {chord.tonic.letter + ' ' + chord.quality}
                     </button>
                 
                 ))}</div>
+                </ChordScrollContainer>
             </div>
         ))}
     </div>

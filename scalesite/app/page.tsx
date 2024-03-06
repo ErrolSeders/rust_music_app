@@ -1,6 +1,4 @@
 
-
-import { Greeter } from '@/components/Greeter';
 import ChordQualities from '@/components/ChordButtons';
 import { WasmProvider } from '@/contexts/WasmContext';
 import ScaleRing from '@/components/ScaleRing';
@@ -10,7 +8,7 @@ import { NoteNameProvider } from '@/contexts/NoteNameContext';
 export default function Home() {
 
   return (
-    <main className="bg-l_primary flex flex-auto min-h-screen items-center p-24 m-auto">
+    <main className="flex flex-1 min-h-screen min-w-screen items-center justify-center p-2">
       <WasmProvider>
       <NoteNameProvider>
         <ScaleContainer/>

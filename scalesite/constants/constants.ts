@@ -30,23 +30,23 @@ export const NOTENUMBERSSHARPS: { [key: number]: string } = {
 
 // prettier-ignore
 export const NOTENAMESTONUMBERS: { [key: string]: number } = {
-  "C": 0,
-  "C#": 1,
-  "Db": 1,
-  "D": 2,
-  "D#": 3,
-  "Eb": 3,
-  "E": 4,
-  "F": 5,
-  "F#": 6,
-  "Gb": 6,
-  "G": 7,
-  "G#": 8,
-  "Ab": 8,
-  "A": 9,
-  "A#": 10,
-  "Bb": 10,
-  "B": 11,
+  "c": 0,   "C": 0,
+  "c#": 1,  "C#": 1,
+  "db": 1,  "Db": 1,
+  "d": 2,   "D": 2,
+  "d#": 3,  "D#": 3,
+  "eb": 3,  "Eb": 3,
+  "e": 4,   "E": 4,
+  "f": 5,   "F": 5,
+  "f#": 6,  "F#": 6,
+  "gb": 6,  "Gb": 6,
+  "g": 7,   "G": 7,
+  "g#": 8,  "G#": 8,
+  "ab": 8,  "Ab": 8,
+  "a": 9,   "A": 9,
+  "a#": 10, "A#": 10,
+  "bb": 10, "Bb": 10,
+  "b": 11,  "B": 11,
 };
 
 export const ANGLESTOTONICS: { [angle: number]: number } = {
@@ -62,17 +62,4 @@ export const ANGLESTOTONICS: { [angle: number]: number } = {
   360: 9,
   330: 10,
   300: 11,
-};
-
-const COLORSHEMELIST = {
-  d_primary: "#282c34",
-  d_secondary: "#3a3f4b",
-  d_accent: "#4f566b",
-  l_primary: "#e9eae6",
-  l_secondary: "#93aac3",
-  l_accent: "#9fA2A6",
-  inscale: "#89c6f1",
-  inchord: "#1e88e4",
-  tonic: "#2c488f",
-  dark: "#181f3f",
 };

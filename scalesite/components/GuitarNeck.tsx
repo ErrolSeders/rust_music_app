@@ -1,7 +1,7 @@
 import { NOTENAMESTONUMBERS } from "@/constants/constants";
 import { useNoteNames } from "@/contexts/NoteNameContext";
 import SetElementColor from "@/hooks/setElementColor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface GuitarNeckProps{
     scaleUIState: ScaleUIState;
@@ -14,40 +14,35 @@ const GuitarNeck: React.FC<GuitarNeckProps> = ({scaleUIState, setScaleUIState, s
     const [tuning, setTuning] = useState([4,9,2,7,11,4])
     
     const STRINGS = 6;
-    const FRETS = 18;
+    const FRETS = 19;
 
     const handleTuningChange = (stringNum: number, event: React.ChangeEvent<HTMLInputElement>) => {
         const newTuning = [...tuning];
         newTuning[stringNum] = NOTENAMESTONUMBERS[event.target.value];
         setTuning(newTuning);
+
     }
 
+    const importantFrets = [0, 3, 5, 7, 9, 12, 15, 17]
+
     return (
-    <div className="flex flex-col mx-auto p-2"> 
-        <div className="ml-[5.2rem] flex justify-between mb-4">
+    <section className="flex flex-col mx-auto p-2"> 
+        <header className="flex mb-4">
         {Array.from({ length: STRINGS }, (_, i) => (
             <input 
                 key={`string-input-${i}`} 
-                type="text" 
+                className="mx-1 w-8 h-8 bg-ps1grey-50 rounded-md text-center items-center justify-center"
+                type="text"
                 value={noteNames[tuning[i]]} 
                 onChange={(event) => handleTuningChange(i, event)}
-                className="w-8 h-8 rounded text-center items-center justify-center"
             />
         ))}
-        </div>
-        <div className="grid grid-cols-8">
-                <div className="flex flex-col ">
-                    {Array.from({ length: FRETS }, (_, j) => (
-                        <div key={`fret-number-${j}`} className="py-1 my-1 flex items-center justify-center">
-                            {j}
-                        </div>
-                    ))}
-                </div>
-                <div className="flex flex-col">  </div>
+        </header>
+        <div className="grid grid-cols-7">
                 {Array.from({ length: STRINGS }, (_, i) => (
                     <div key={`string-${i}`} className="flex flex-col">
                         {Array.from({ length: FRETS }, (_, j) => (
-                                <GuitarNeckElement key={`fret-${j}`}
+                                <GuitarNeckElement key={`string-${i}-fret-${j}`}
                                 scaleUIState={scaleUIState}
                                 setScaleUIState={setScaleUIState}
                                 selectedChord={selectedChord}
@@ -58,8 +53,21 @@ const GuitarNeck: React.FC<GuitarNeckProps> = ({scaleUIState, setScaleUIState, s
                         ))}
                     </div>
                 ))}
-            </div>
-    </div>
+                <aside className="flex flex-col ">
+                    {/* Fret Numbers */}
+                    {Array.from({ length: FRETS }, (_, j) => (
+                        <div 
+                            key={`fret-number-${j}`} 
+                            className={
+                                `${importantFrets.includes(j) ? 'text-ps1red-800' : 'text-ps1coal-900'}
+                                py-1 my-1 h-[33px] w-8 mx-1 text-center table-cell align-middle`
+                            }>
+                                {j}
+                        </div>
+                    ))}
+                </aside>
+        </div>
+    </section>
     )
 }
 

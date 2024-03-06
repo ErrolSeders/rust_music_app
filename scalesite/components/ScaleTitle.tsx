@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-'use client'
 import { useNoteNames } from "@/contexts/NoteNameContext";
 import { useEffect, useState } from "react";
 
@@ -23,7 +22,7 @@ const ScaleTitle: React.FC<ScaleTitleProps> = ({wasmPromise, currentScale}) => {
     }, [currentScale, noteNames]);
     
     return (
-        <div className="flex bg-ps1blue-200 font-semibold px-2 rounded-md flex-row">
+        <div className="flex w-full bg-ps1blue-200 font-semibold px-2 rounded-md flex-row">
             <h1 className="mr-auto">{scalename}</h1>
             <h1 className="ml-auto">{currentScale.scalenum}</h1>
         </div>
