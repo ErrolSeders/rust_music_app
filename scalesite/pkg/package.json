@@ -1,0 +1,16 @@
+{
+  "name": "scalesite_api",
+  "version": "0.1.0",
+  "files": [
+    "scalesite_api_bg.wasm",
+    "scalesite_api.js",
+    "scalesite_api_bg.js",
+    "scalesite_api.d.ts"
+  ],
+  "module": "scalesite_api.js",
+  "types": "scalesite_api.d.ts",
+  "sideEffects": [
+    "./scalesite_api.js",
+    "./snippets/*"
+  ]
+}
