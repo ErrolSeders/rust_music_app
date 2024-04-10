@@ -8,7 +8,7 @@ const ChordScrollContainer = ({children}: {children: React.ReactNode}) => {
           style={{
             position: "relative", 
             height: "100%", 
-            overflow: "scroll"
+            overflow: "scroll",
            }}
         >
           <div
@@ -91,11 +91,12 @@ const ChordButtons = ({wasmPromise, currentScale, selectedChord, setSelectedChor
     const captialize = (str:string) => str.charAt(0).toUpperCase() + str.slice(1);
 
     return (
-        <div className="flex flex-col h-screen w-80 mx-auto">
+        //! : Fix the height of the container for smaller screens
+        <div className="flex flex-col h-[60%] lg:h-screen lg:w-80 mx-auto">
         {Object.entries(chords).map(([group, chords], i) => (
-            <div key={i} className="grid-cols-2 h-32 my-1 py-2 px-2 ml-2 mr-auto">
+            <div key={i} className="grid-cols-2 max-h-[20vh] my-1 py-2 px-2 ml-2 mr-auto">
                 <div>{captialize(group) + ":"}</div>
-                <hr className="w-full"/>
+                <hr className="w-full bg-neutral-900"/>
                 <ChordScrollContainer>
                 <div className="grid-cols-3 justify-center items-center justify-items-stretch mx-auto">
                 {chords.map((chord, j) => (
@@ -103,14 +104,15 @@ const ChordButtons = ({wasmPromise, currentScale, selectedChord, setSelectedChor
                         key={j} 
                         onClick={() => {setSelectedChord(chord)}} 
                         className={
-                            `${chord === selectedChord ? 'bg-ps1blue-700' : 'bg-ps1blue-200'} 
+                            `${chord === selectedChord ? 'bg-neutral-600' : 'bg-neutral-400'} 
                             px-2 my-1 mx-1 rounded-md`
                         }
                     >
                         {chord.tonic.letter + ' ' + chord.quality}
                     </button>
                 
-                ))}</div>
+                ))} 
+                </div>
                 </ChordScrollContainer>
             </div>
         ))}

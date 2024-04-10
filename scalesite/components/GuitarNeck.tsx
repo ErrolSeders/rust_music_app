@@ -31,7 +31,7 @@ const GuitarNeck: React.FC<GuitarNeckProps> = ({scaleUIState, setScaleUIState, s
         {Array.from({ length: STRINGS }, (_, i) => (
             <input 
                 key={`string-input-${i}`} 
-                className="mx-1 w-8 h-8 bg-ps1grey-50 rounded-md text-center items-center justify-center"
+                className="mx-1 w-8 h-8 bg-neutral-200 rounded-md text-center items-center justify-center"
                 type="text"
                 value={noteNames[tuning[i]]} 
                 onChange={(event) => handleTuningChange(i, event)}
@@ -59,7 +59,7 @@ const GuitarNeck: React.FC<GuitarNeckProps> = ({scaleUIState, setScaleUIState, s
                         <div 
                             key={`fret-number-${j}`} 
                             className={
-                                `${importantFrets.includes(j) ? 'text-ps1red-800' : 'text-ps1coal-900'}
+                                `${importantFrets.includes(j) ? 'text-red-900' : 'text-neutral-600'}
                                 py-1 my-1 h-[33px] w-8 mx-1 text-center table-cell align-middle`
                             }>
                                 {j}
@@ -90,10 +90,10 @@ const GuitarNeckElement: React.FC<GuitarNeckElementProps> = ({scaleUIState, setS
         selectedChord, 
         scaleUIState, 
         noteNum, 
-        "bg-ps1blue-900", 
-        "bg-ps1blue-700", 
-        "bg-ps1blue-200",
-        "bg-ps1grey-100",
+        "bg-neutral-600", 
+        "bg-neutral-500", 
+        "bg-neutral-400",
+        "bg-neutral-200",
     )
 
     const handleClick = () => {
@@ -108,7 +108,7 @@ const GuitarNeckElement: React.FC<GuitarNeckElementProps> = ({scaleUIState, setS
             <button onClick={handleClick} className={`h-8 w-8 my-1 mx-1 table-cell align-middle border border_gray-3 rounded-full ${color}`}>
                 {noteNames[noteNum]}
             </button>
-            <hr className="border-gray-3" />
+            <hr className="border-neutral-900" />
         </>
     )
 }

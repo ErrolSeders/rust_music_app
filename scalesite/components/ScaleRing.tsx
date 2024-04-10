@@ -4,6 +4,8 @@ import useRotationalDrag from '@/hooks/useRotationalDrag';
 import SetElementColor from '@/hooks/setElementColor';
 import { ANGLESTOTONICS } from '@/constants/constants';
 
+import { rotate } from '@/utils/utils';
+
 import pallete from '@/constants/pallete';
 import { useNoteNames } from '@/contexts/NoteNameContext';
 import { enforceanglebounds } from '@/utils/utils';
@@ -31,9 +33,9 @@ const ScaleRing: React.FC<ScaleRingProps> = ({scaleUIState, setScaleUIState, sel
     return (
         <div className="relative flex flex-col mx-auto">
             <svg 
-                className="bg-ps1grey-600 rounded-full"
+                className="bg-ps1grey-600 w-[40vw] h-[40vw] lg:w-[40vh] lg:h-[40vh] origin-center rounded-full"
                 ref={svgRef} 
-                style={{width: '40vh', height: '40vh', transformOrigin: 'center'}} 
+                // style={{width: '40vh', height: '40vh', transformOrigin: 'center'}} 
                 viewBox="0 0 400 400" 
                 transform={`rotate(${angle})`}
             >
@@ -50,19 +52,47 @@ const ScaleRing: React.FC<ScaleRingProps> = ({scaleUIState, setScaleUIState, sel
                     />
                 ))}
             </svg>
-            <div className="flex flex-row">
-                <button className="bg-ps1blue-200 px-2 my-1 mx-1 rounded-md mr-auto" 
-                        onClick={() => setAngle((prevAngle: number) => enforceanglebounds(prevAngle + 30))}>
-                            Rotate left
-                </button>
-                <button className="bg-ps1blue-200 px-2 my-1 mx-1 rounded-md ml-auto" 
-                        onClick={() => setAngle((prevAngle: number) => enforceanglebounds(prevAngle - 30))}>
-                            Rotate right
-                </button>
+            <div className='my-[-6vh]'>
+                <div className="flex flex-row">
+                <button className="bg-neutral-400 px-2 my-1 mx-1 rounded-md mr-auto" 
+                            onClick={() => setAngle((prevAngle: number) => enforceanglebounds(prevAngle + 30))}>
+                                ↻
+                    </button>
+                    <button className="bg-neutral-400 px-2 my-1 mx-1 rounded-md ml-auto" 
+                            onClick={() => setAngle((prevAngle: number) => enforceanglebounds(prevAngle - 30))}>
+                                ↺
+                    </button>
+                </div>
+                <div className="flex flex-row">
+                <button className="bg-neutral-400 px-2 my-1 mx-1 rounded-md mr-auto" 
+                                onClick={() => transposescale(scaleUIState, setScaleUIState, -1)}>
+                                    Transpose ↻
+                    </button>
+                    <button className="bg-neutral-400 px-2 my-1 mx-1 rounded-md ml-auto" 
+                                onClick={() => transposescale(scaleUIState, setScaleUIState, 1)}>
+                                    Transpose ↺
+                    </button>
+                </div>
             </div>
         </div>
     );
 };
+
+
+const transposescale = (scaleUIState: ScaleUIState, setScaleUIState: ReactSetter<ScaleUIState>, direction: number) => {
+    const NotesOnKeys = Object.keys(scaleUIState.notesOn);
+    const NotesOnVals = Object.values(scaleUIState.notesOn);
+
+    const newNotesOnVals = rotate(NotesOnVals, direction);
+
+    const newNotesOn = NotesOnKeys.reduce((acc, key, i) => {
+        acc[key] = newNotesOnVals[i];
+        return acc;
+    }, {});
+
+    setScaleUIState({...scaleUIState, notesOn: newNotesOn});
+}
+
 
 interface ScaleRingElementProps {
     noteNum: number;
@@ -95,10 +125,10 @@ const ScaleRingElement: React.FC<ScaleRingElementProps> = ({ noteNum, scaleUISta
         selectedChord, 
         scaleUIState, 
         noteNum, 
-        pallete.ps1blue[900], 
-        pallete.ps1blue[700],
-        pallete.ps1blue[200],
-        pallete.ps1grey[100],
+        "#525252", 
+        "#737373",
+        "#a3a3a3",
+        "#e5e5e5",
     )
 
     useEffect(() => {
@@ -112,7 +142,7 @@ const ScaleRingElement: React.FC<ScaleRingElementProps> = ({ noteNum, scaleUISta
         };
     }, [isDragging, handleMouseDown, handleMouseUp, handleMouseMove]);
 
-    const r = 140;
+    const r = 152;
     const cx = 200 + r * Math.cos(rotation * Math.PI / 180);
     const cy = 200 + r * Math.sin(rotation * Math.PI / 180);
 
