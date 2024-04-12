@@ -8,7 +8,7 @@ import { NoteNameProvider } from '@/contexts/NoteNameContext';
 export default function Home() {
 
   return (
-    <main className="flex flex-1 min-h-screen min-w-screen items-center justify-center p-2">
+    <main className="flex min-h-screen min-w-screen items-center justify-center p-2">
       <WasmProvider>
       <NoteNameProvider>
         <ScaleContainer/>

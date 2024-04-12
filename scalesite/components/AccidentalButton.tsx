@@ -6,6 +6,7 @@ interface AccidentalButtonProps {
     setNoteNames: ReactSetter<NoteNames>;
 }
 
+// Whoops a button!
 const AccidentalButton = ({ setNoteNames }: AccidentalButtonProps) => {
     const [useSharps, setUseSharps] = useState(false);
 
@@ -19,7 +20,7 @@ const AccidentalButton = ({ setNoteNames }: AccidentalButtonProps) => {
 
     return (
         <button 
-        className={`bg-ps1blue-200 flex w-full items-center justify-center rounded-md px-2 mx-2`} 
+        className={`bg-neutral-400 flex w-full items-center justify-center rounded-md px-2 mx-2`} 
         onClick={handleClick}> 
                 {useSharps ? "Sharps" : "Flats"} 
         </button>

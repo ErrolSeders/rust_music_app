@@ -10,7 +10,8 @@ import ScaleTitle from "./ScaleTitle";
 import {useEffect, useState} from 'react';
 import { useWasm } from "@/contexts/WasmContext";
 import { useNoteNames } from "@/contexts/NoteNameContext";
-import { rotate } from "@/utils/utils";
+import { bitrotateleft, rotate } from "@/utils/utils";
+import { NOTENAMESTONUMBERS, NOTENUMBERSFLATS } from "@/constants/constants";
 
 const ScaleUIState: ScaleUIState = {
     notesOn: {
@@ -75,12 +76,14 @@ const ScaleContainer = () => {
     }, [scaleUIState]);
 
     useEffect(() => {
-        console.log(currentScale);
-    }, [currentScale])
+        console.log(scaleUIState);
+        console.log(Object.keys(scaleUIState.notesOn));
+        console.log(Object.values(scaleUIState.notesOn));
+    }, [scaleUIState])
 
     return (
         <div className="my-4 flex flex-row">
-            <section className="flex flex-row max-h-screen px-8 mx-auto">
+            <section className="flex flex-col-reverse lg:flex-row max-h-screen px-8 mx-auto">
                 <ChordButtons wasmPromise={wasmPromise} currentScale={currentScale} selectedChord={selectedChord} setSelectedChord={setSelectedChord}/>
                 <div>   
                 <header className="flex flex-row py-2"> 
@@ -92,7 +95,7 @@ const ScaleContainer = () => {
                 <ScaleRing scaleUIState={scaleUIState} setScaleUIState={setScaleUIState} selectedChord={selectedChord}/> 
                 </div>
             </section>
-            <div className="mx-[12.5vh] justify-center">
+            <div className="justify-center">
                 <GuitarNeck scaleUIState={scaleUIState} setScaleUIState={setScaleUIState} selectedChord={selectedChord}/>
             </div>
         </div>

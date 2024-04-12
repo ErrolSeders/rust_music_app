@@ -119,7 +119,7 @@ pub fn get_scalename(scalenum: u16) -> String {
         0b1010_1010_1101 => String::from("Melodic Minor"),
         0b0110_1010_1011 => String::from("Dorian b2"),
         0b1011_0101_0101 => String::from("Lydian Augmented"),
-        0b0110_1101_0101 => String::from("Acoutic"),
+        0b0110_1101_0101 => String::from("Acoustic"),
         0b0101_1011_0101 => String::from("Major-Minor"),
         0b0101_0110_1101 => String::from("Minor Locrian"),
         0b0101_0101_1011 => String::from("Super Locrian"),
@@ -173,7 +173,7 @@ pub fn build_intervals(pitchclassset: Vec<u16>) -> Vec<u16> {
 }
 
 #[wasm_bindgen]
-// Chords are encode in hexadecimal. Each note corresponds to a value 0-b (0-11).
+// Chords are encoded in hexadecimal. Each note corresponds to a value 0-b (0-11).
 // Each note in the chord corresponds to a digit in the final number read right to left. 
 // A leading 0xE is added to the front of each chord to keep a chord ending in C=0 
 // from being indistinguishable another chord without the final C=0.

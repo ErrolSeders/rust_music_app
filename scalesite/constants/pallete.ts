@@ -12,6 +12,13 @@ const pallete = {
     900: "#5d5d5d",
   },
 
+  primary: "#121212",
+  secondary: "#ebeeff",
+
+  lblue: "#b8c0ff",
+  blue: "#818dfe",
+  dblue: "#6d72ab",
+
   ps1coal: {
     50: "#959595",
     100: "#7d7d7d",
