@@ -85,10 +85,10 @@ const transposescale = (scaleUIState: ScaleUIState, setScaleUIState: ReactSetter
 
     const newNotesOnVals = rotate(NotesOnVals, direction);
 
-    const newNotesOn = NotesOnKeys.reduce((acc, key, i) => {
-        acc[key] = newNotesOnVals[i];
+    const newNotesOn = NotesOnKeys.reduce((acc:{ [key: string] : boolean}, key, i) => {
+        acc[key] = !!newNotesOnVals[i];
         return acc;
-    }, {});
+    }, {} as { [key: string]: boolean });
 
     setScaleUIState({...scaleUIState, notesOn: newNotesOn});
 }
